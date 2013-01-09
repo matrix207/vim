@@ -59,7 +59,6 @@ set nobackup
 
 :set colorcolumn=81
 
-:iab mmail dennis.cpp@gmail.com
 :iab iif if ()<CR>{<CR>}<Esc>2<UP>f)i
 :iab FF for(int i=0; i<; i++)<CR>{<CR>}<Esc>2<UP>f<a
 :iab iswitch switch()<CR>{<CR><Tab>case :<CR><Tab>break;<CR><Tab>default :<CR><Tab>break;<CR>}<Esc>7<UP>f)i
