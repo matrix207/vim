@@ -54,6 +54,12 @@ set shiftwidth=4
 set nowrap
 set nobackup
 
+:let mapleader = ","
+
+"复制粘贴
+nmap <Leader>y "+y
+nmap <Leader>p "+gP
+ 
 "分割为两行
 :nnoremap K i<CR><Esc>
 
