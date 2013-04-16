@@ -173,10 +173,7 @@ filetype plugin on
 autocmd FileType cpp set omnifunc=omni#cpp#complete#Main
 
 " configure tags - add additional tags here or comment out not-used ones
-set tags+=~/.vim/tags/cpp
-set tags+=~/.vim/tags/gl
-set tags+=~/.vim/tags/sdl
-" set tags+=~/.vim/tags/qt4
+set tags+=~/.vim/tags/system
 
 " build tags with Ctrl-F12
 "--c++-kinds=+p  : 为C++文件增加函数原型的标签
