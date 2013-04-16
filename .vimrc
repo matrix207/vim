@@ -1,14 +1,17 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Description: .vimrc, for fedora
-" Last Change: Sat Dec 29 22:52:36 CST 2012
-" Author:      dennis.cpp@gmail.com
-"              more vim skill see http://matrix207.github.com
-" Version:     2.0
+" Description: .vimrc
+" History:
+"         2012/12/29 Dennis  Create
+"         2013/04/16 Dennis  Add plugin AutoComplPop.vim and snipMate.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 影响全部用户的配置:
 " 插件 *.vim 拷贝到 /usr/share/vim/vim73/plugin/
 " 文档 *.txt 拷贝到 /usr/share/vim/vim73/doc/
+" 影响当前用户的配置:
+" 插件 *.vim 拷贝到 ~/.vim/plugin/
+" 文档 *.txt 拷贝到 ~/.vim/doc/
 "
 " 中文在线帮助
 " http://man.chinaunix.net/newsoft/vi/doc/help.html
@@ -34,6 +37,28 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "常规设置
 
+"编码设置
+set enc=utf-8
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+
+" 字体
+if has("gui_running")
+  if has("gui_gtk2")
+    "set guifont=Inconsolata\ 12
+	set guifont=Liberation\Mono\ 12
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
+endif
+
+"语言设置
+set helplang=cn
+set encoding=utf8 
+set langmenu=zh_CN.UTF-8 
+set imcmdline 
+source $VIMRUNTIME/delmenu.vim 
+source $VIMRUNTIME/menu.vim
+
 "语法高亮
 syntax enable
 syntax on
@@ -54,37 +79,19 @@ set shiftwidth=4
 set nowrap
 set nobackup
 
+" default <Leader> map backslash
 :let mapleader = ","
 
-"复制粘贴
-nmap <Leader>y "+y
-nmap <Leader>p "+gP
- 
 "分割为两行
 :nnoremap K i<CR><Esc>
 
 :set colorcolumn=81
 
-:iab iif if ()<CR>{<CR>}<Esc>2<UP>f)i
-:iab FF for(int i=0; i<; i++)<CR>{<CR>}<Esc>2<UP>f<a
-:iab iswitch switch()<CR>{<CR><Tab>case :<CR><Tab>break;<CR><Tab>default :<CR><Tab>break;<CR>}<Esc>7<UP>f)i
-
 "全选
-map <C-a> ggVG
+"map <C-a> ggVG
 
 "自动对齐
 set autoindent 
-
-"设置文件头
-:iab ihead <Esc>ggO/*<CR>Copyleft(c) 2012-2013 2<CR>Authored by Dennis on:<Esc>:read !date <CR>kJ$a2<CR> @desc:2<CR> @history<CR>*/<Esc>
-
-"插入日期和时间
-:iab idate A<C-R>=strftime("%c")<CR><Esc>
-
-"c框架frame
-:iab ifc  #include <stdio.h><CR><CR>int main(int argc, char* argv[])<CR>{<CR><Tab>return 0;<CR>}<Esc>2<up>
-"c++框架frame
-:iab ifcpp #include <iostream><CR>using namespace std;<CR><CR>int main(int argc, char* argv[])<CR>{<CR><Tab>return 0;<CR>}<Esc>2<up>
 
 " 开始折叠
 set foldenable
@@ -115,16 +122,42 @@ autocmd! BufNewFile,BufRead * setlocal nofoldenable
 
 " splite
 " 横向划分
-nmap ,h :spl<CR>
+nmap <Leader>h :spl<CR>
 " 竖向划分
-nmap ,v :vspl<CR>
+nmap <Leader>v :vspl<CR>
 " 加宽
 nmap + <C-W>+
 " 减宽
 nmap - <C-W>-
 
+map <leader>y "+y
+map <leader>p "+gP
+
 " 刷新文件
 " :e
+
+
+" 设置代码自动补全快捷键(这些方法在插件中已经实现)
+"设置文件头
+:iab ihead <Esc>ggO/*<CR>Copyleft(c) 2012-2013 <CR>Authored by Dennis on:<Esc>:
+	\ read !date <CR>kJ$a<CR>@desc:<CR>@history<CR>/<Esc>
+
+"插入日期和时间
+:iab idate A<C-R>=strftime("%c")<CR><Esc>
+
+"c框架frame
+:iab ifc  #include <stdio.h><CR><CR>int main(int argc, char* argv[])<CR>{<CR>
+	\ <Tab>return 0;<CR>}<Esc>2<up>
+"c++框架frame
+:iab ifcpp #include <iostream><CR>using namespace std;<CR><CR>int main(int argc,
+	\ char* argv[])<CR>{<CR><Tab>return 0;<CR>}<Esc>2<up>
+
+:iab iif if ()<CR>{<CR>}<Esc>2<UP>f)i
+:iab FF for(int i=0; i<; i++)<CR>{<CR>}<Esc>2<UP>f<a
+:iab iswitch switch()<CR>{<CR><Tab>case :<CR><Tab>break;<CR><Tab>default :<CR>
+	\ <Tab>break;<CR>}<Esc>7<UP>f)i
+
+filetype plugin on
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Ctags 定位变量、宏和函数的定义
@@ -132,6 +165,42 @@ nmap - <C-W>-
 "ctags -R
 ":set tags=/home/***/tags
 "<C-]> 定位到定义处 <C-T>返回
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"OmniCppComplete : C/C++ omni-completion with ctags database 
+"C++自动补全插件, 依赖 ctags
+"http://www.vim.org/scripts/script.php?script_id=1520
+autocmd FileType cpp set omnifunc=omni#cpp#complete#Main
+
+" configure tags - add additional tags here or comment out not-used ones
+set tags+=~/.vim/tags/cpp
+set tags+=~/.vim/tags/gl
+set tags+=~/.vim/tags/sdl
+" set tags+=~/.vim/tags/qt4
+
+" build tags with Ctrl-F12
+"--c++-kinds=+p  : 为C++文件增加函数原型的标签
+"--fields=+iaS   : 在标签文件中加入继承信息(i)、
+"                  类成员的访问控制信息(a)、以及函数的指纹(S)
+"--extra=+q      : 为标签增加类修饰符。注意，如果没有此选项，将不能对类成员补全
+map <C-F12> :!ctags -R -I --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+"
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" " automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"echofunc.vim 
+let g:EchoFuncShowOnStatus = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "TagList 高效浏览源码
@@ -150,7 +219,7 @@ nmap wm :WMToggle<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " cscope setting
 " yum install cscope
-" ctags -Rb
+" cscope -Rb
 if has("cscope")
   set csprg=/usr/bin/cscope
   set csto=1
@@ -199,8 +268,13 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplMapWindowNavVim = 1
 "用<C-箭头键>切换到上下左右窗口中去
 "let g:miniBufExplMapWindowNavArrows = 1
+"设定自动开启MiniBufExplorer的文件数目
+let g:miniBufExplorerMoreThanOne=2
 nmap <C-N> :bn<CR>
 nmap <C-P> :bp<CR>
+map <leader>b :MiniBufExplorer<cr>
+map <leader>c :CMiniBufExplorer<cr>
+map <leader>u :UMiniBufExplorer<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "c/h文件间相互切换 -- 插件: A
@@ -218,7 +292,6 @@ nnoremap <silent> <F3> :vimgrep <cword>  *.h *.c *.cpp<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "自动补全
 ":help complete
-"<C-X>
 "Ctrl+P 向前切换成员
 "Ctrl+N 向后切换成员
 "Ctrl+E 表示退出下拉窗口, 并退回到原来录入的文字
@@ -242,11 +315,19 @@ nnoremap <silent> <F3> :vimgrep <cword>  *.h *.c *.cpp<CR>
 setlocal dictionary+=$VIMRUNTIME/dict/english.dict
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"代码自动提示 AutoComplPop 
+"http://www.vim.org/scripts/script.php?script_id=1879
+"代码模板补全 snipMate 
+"http://www.vim.org/scripts/script.php?script_id=2540
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "注释代码
 "注释 vimrc, 符号"
-nmap <C-M>v :s/^\("\)*/"/g<CR>:nohl<CR>
+"nmap <C-M>v :s/^\("\)*/"/g<CR>:nohl<CR>
+nmap <C-M>v :s/^/"/g<CR>:nohl<CR>
 nmap <S-M>v :s/^\("\)//g<CR>:nohl<CR>
-vmap <C-M>v :s/^\("\)*/"/g<CR>:nohl<CR>
+"vmap <C-M>v :s/^\("\)*/"/g<CR>:nohl<CR>
+vmap <C-M>v :s/^/"/g<CR>:nohl<CR>
 vmap <S-M>v :s/^\("\)//g<CR>:nohl<CR>
 "注释 c/c++, 符号//
 nmap <C-M>c :s#^\(//\)*#//#g<CR>:nohl<CR>
@@ -264,4 +345,16 @@ nmap <S-M>b :s/^\(::\)//g<CR>:nohl<CR>
 vmap <C-M>b :s/^\(::\)*/::/g<CR>:nohl<CR>
 vmap <S-M>b :s/^\(::\)//g<CR>:nohl<CR>
 
-":colorscheme bandit
+" Blue:
+"      classes structures typedefs interfaces namespaces
+" Gray:
+"	   variables
+" Purple:
+"      preprocessor macros
+" Red:
+"	   methods
+" White:
+"      comment
+" Green:
+"      
+
