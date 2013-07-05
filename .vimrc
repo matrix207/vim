@@ -1,8 +1,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Description: .vimrc
 " History:
-"         2012/12/29 Dennis  Create
+"         2013/07/05 Dennis  use clang-complete instead Omni plugin
 "         2013/04/16 Dennis  Add plugin AutoComplPop.vim and snipMate.vim
+"         2012/12/29 Dennis  Create
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -167,33 +168,14 @@ filetype plugin on
 "<C-]> 定位到定义处 <C-T>返回
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"OmniCppComplete : C/C++ omni-completion with ctags database 
-"C++自动补全插件, 依赖 ctags
-"http://www.vim.org/scripts/script.php?script_id=1520
-autocmd FileType cpp set omnifunc=omni#cpp#complete#Main
-
-" configure tags - add additional tags here or comment out not-used ones
-set tags+=~/.vim/tags/system
-
-" build tags with Ctrl-F12
-"--c++-kinds=+p  : 为C++文件增加函数原型的标签
-"--fields=+iaS   : 在标签文件中加入继承信息(i)、
-"                  类成员的访问控制信息(a)、以及函数的指纹(S)
-"--extra=+q      : 为标签增加类修饰符。注意，如果没有此选项，将不能对类成员补全
-map <C-F12> :!ctags -R -I --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
-"
-" OmniCppComplete
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
-" " automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
+"clang-complete
+"c/c++自动补全插件
+let g:clang_complete_copen=1
+let g:clang_periodic_quickfix=1
+let g:clang_snippets=1
+let g:clang_close_preview=1
+let g:clang_use_library=1
+let g:clang_user_options='-stdlib=libstdc++ -std=c++11 -I/usr/include'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "echofunc.vim 
@@ -284,7 +266,7 @@ nnoremap <silent> <F12> :A<CR>
 "http://www.vim.org/scripts/script.php?script_id=311
 "nnoremap <silent> <F3> :Grep<CR>
 
-nnoremap <silent> <F3> :vimgrep <cword>  *.h *.c *.cpp<CR>
+nnoremap <silent> <F3> :vimgrep <cword>  *.h *.c <CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "自动补全
