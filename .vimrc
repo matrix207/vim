@@ -166,6 +166,15 @@ filetype plugin on
 "ctags -R
 ":set tags=/home/***/tags
 "<C-]> 定位到定义处 <C-T>返回
+" configure tags - add additional tags here or comment out not-used ones
+set tags+=~/.vim/tags/system
+
+" build tags with Ctrl-F12
+"--c++-kinds=+p  : 为C++文件增加函数原型的标签
+"--fields=+iaS   : 在标签文件中加入继承信息(i)、
+"                  类成员的访问控制信息(a)、以及函数的指纹(S)
+"--extra=+q      : 为标签增加类修饰符。注意，如果没有此选项，将不能对类成员补全
+map <C-F12> :!ctags -R -I --c++-kinds=+p --fields=+iaS --extra=+q .<CR> 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "clang-complete
