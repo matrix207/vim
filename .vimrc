@@ -1,6 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Description: .vimrc
 " History:
+"         2013/07/31 Dennis  forbid clang auto-compile, restore ctag, and update cscope
 "         2013/07/05 Dennis  use clang-complete instead Omni plugin
 "         2013/04/16 Dennis  Add plugin AutoComplPop.vim and snipMate.vim
 "         2012/12/29 Dennis  Create
@@ -166,16 +167,25 @@ filetype plugin on
 "ctags -R
 ":set tags=/home/***/tags
 "<C-]> 定位到定义处 <C-T>返回
+" configure tags - add additional tags here or comment out not-used ones
+set tags+=~/.vim/tags/system
+
+" build tags with Ctrl-F12
+"--c++-kinds=+p  : 为C++文件增加函数原型的标签
+"--fields=+iaS   : 在标签文件中加入继承信息(i)、
+"                  类成员的访问控制信息(a)、以及函数的指纹(S)
+"--extra=+q      : 为标签增加类修饰符。注意，如果没有此选项，将不能对类成员补全
+map <C-F12> :!ctags -R -I --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "clang-complete
 "c/c++自动补全插件
-let g:clang_complete_copen=1
-let g:clang_periodic_quickfix=1
-let g:clang_snippets=1
-let g:clang_close_preview=1
-let g:clang_use_library=1
-let g:clang_user_options='-stdlib=libstdc++ -std=c++11 -I/usr/include'
+"let g:clang_complete_copen=1
+"let g:clang_periodic_quickfix=1
+"let g:clang_snippets=1
+"let g:clang_close_preview=1
+"let g:clang_use_library=1
+"let g:clang_user_options='-stdlib=libstdc++ -std=c++11 -I/usr/include'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "echofunc.vim 
@@ -196,29 +206,31 @@ nmap wm :WMToggle<cr>
 "刷新目录信息 :e .
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" cscope setting
+" cscope
 " yum install cscope
 " cscope -Rb
-if has("cscope")
-  set csprg=/usr/bin/cscope
-  set csto=1
-  set cst
-  set nocsverb
-" add any database in current directory
-  if filereadable("cscope.out")
-  cs add cscope.out
+" :cscope add ../cscope.out
+" (type ":help :cscope" in vim to show help)
+" from http://vim.wikia.com/wiki/Autoloading_Cscope_Database 
+function! LoadCscope()
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
   endif
-  set csverb
-endif
+endfunction
+au BufEnter /* call LoadCscope()
 
 " s symbol
-" g 
-" d call
-" c called
+" g definition
+" d called
+" c calling
 " t text
 " e grep
 " f file
-" i include this file
+" i #include this file
 nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>
@@ -267,6 +279,10 @@ nnoremap <silent> <F12> :A<CR>
 "nnoremap <silent> <F3> :Grep<CR>
 
 nnoremap <silent> <F3> :vimgrep <cword>  *.h *.c <CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"close error window
+nnoremap <silent> <F4> :cclose <CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "自动补全
