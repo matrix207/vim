@@ -74,9 +74,7 @@ set tags=tags
 
 set hlsearch
 
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 
 set nowrap
 set nobackup
