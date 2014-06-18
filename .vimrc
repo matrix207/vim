@@ -1,6 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Description: .vimrc
 " History:
+"         2014/06/18 Dennis  Automatically syntax highlight Markdown files 
 "         2013/07/31 Dennis  forbid clang auto-compile, restore ctag, and update cscope
 "         2013/07/05 Dennis  use clang-complete instead Omni plugin
 "         2013/04/16 Dennis  Add plugin AutoComplPop.vim and snipMate.vim
@@ -351,3 +352,6 @@ vmap <S-M>b :s/^\(::\)//g<CR>:nohl<CR>
 " Green:
 "      
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Automatically syntax highlight Markdown files
+au BufRead,BufNewFile *.md set filetype=markdown
