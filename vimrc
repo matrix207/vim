@@ -1,6 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Description: .vimrc
 " History:
+"         2014/06/19 Dennis  Fix dictionary path error
 "         2014/06/18 Dennis  Automatically syntax highlight Markdown files 
 "         2013/07/31 Dennis  forbid clang auto-compile, restore ctag, and update cscope
 "         2013/07/05 Dennis  use clang-complete instead Omni plugin
@@ -306,7 +307,7 @@ nnoremap <silent> <F4> :cclose <CR>
 " http://www.vim.org/scripts/script.php?script_id=195
 " tar xvf ~/Downloads/engspchk.tar.gz CVIMSYN/engspchk.dict
 
-setlocal dictionary+=$VIMRUNTIME/dict/english.dict
+setlocal dictionary+=~/.vim/dict/english.dict
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "代码自动提示 AutoComplPop 
