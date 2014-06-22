@@ -180,12 +180,14 @@ map <C-F12> :!ctags -R -I --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "clang-complete
 "c/c++自动补全插件
+"https://github.com/Rip-Rip/clang_complete 
 "let g:clang_complete_copen=1
 "let g:clang_periodic_quickfix=1
 "let g:clang_snippets=1
 "let g:clang_close_preview=1
 "let g:clang_use_library=1
 "let g:clang_user_options='-stdlib=libstdc++ -std=c++11 -I/usr/include'
+"let g:neocomplcache_enable_at_startup = 1  
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "echofunc.vim 
