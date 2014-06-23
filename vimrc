@@ -1,6 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Description: .vimrc
 " History:
+"         2014/06/23 Dennis  use clang-complete and change dictionary file
 "         2014/06/19 Dennis  Fix dictionary path error
 "         2014/06/18 Dennis  Automatically syntax highlight Markdown files 
 "         2013/07/31 Dennis  forbid clang auto-compile, restore ctag, and update cscope
@@ -181,13 +182,13 @@ map <C-F12> :!ctags -R -I --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 "clang-complete
 "c/c++自动补全插件
 "https://github.com/Rip-Rip/clang_complete 
-"let g:clang_complete_copen=1
-"let g:clang_periodic_quickfix=1
-"let g:clang_snippets=1
-"let g:clang_close_preview=1
-"let g:clang_use_library=1
-"let g:clang_user_options='-stdlib=libstdc++ -std=c++11 -I/usr/include'
-"let g:neocomplcache_enable_at_startup = 1  
+let g:clang_complete_copen=1
+let g:clang_periodic_quickfix=1
+let g:clang_snippets=1
+let g:clang_close_preview=1
+let g:clang_use_library=1
+let g:clang_user_options='-stdlib=libstdc++ -std=c++11 -I/usr/include'
+let g:neocomplcache_enable_at_startup = 1  
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "echofunc.vim 
@@ -305,11 +306,13 @@ nnoremap <silent> <F4> :cclose <CR>
 "Ctrl+X Ctrl+U 用户自定义补全方式
 "Ctrl+X Ctrl+S 拼写建议
 
-" 字典
+" dictionary
 " http://www.vim.org/scripts/script.php?script_id=195
 " tar xvf ~/Downloads/engspchk.tar.gz CVIMSYN/engspchk.dict
+" English Wordlists 
+" http://www-01.sil.org/linguistics/wordlists/english/ 
 
-setlocal dictionary+=~/.vim/dict/english.dict
+setlocal dictionary+=~/.vim/dict/wordsEn.txt
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "代码自动提示 AutoComplPop 
