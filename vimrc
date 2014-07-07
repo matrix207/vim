@@ -1,6 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Description: .vimrc
 " History:
+"         2014/07/07 Dennis  Auto add file title when create new file
 "         2014/06/23 Dennis  use clang-complete and change dictionary file
 "         2014/06/19 Dennis  Fix dictionary path error
 "         2014/06/18 Dennis  Automatically syntax highlight Markdown files 
@@ -77,7 +78,8 @@ set tags=tags
 
 set hlsearch
 
-set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+"set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+set tabstop=4 softtabstop=4 shiftwidth=4
 
 set nowrap
 set nobackup
@@ -361,3 +363,89 @@ vmap <S-M>b :s/^\(::\)//g<CR>:nohl<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Automatically syntax highlight Markdown files
 au BufRead,BufNewFile *.md set filetype=markdown
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Auto add file title when create new file
+autocmd BufNewFile *.[ch],*.hpp,*.cpp exec ":call SetTitle()" 
+
+func SetComment()
+    call setline(1,"/*===============================================================") 
+    call append(line("$"), " * Copyright (C) ".strftime("%Y")." All rights reserved.")
+    call append(line("$"), " * ") 
+    call append(line("$"), " * 文件名称：".expand("%:t")) 
+    call append(line("$"), " * 创 建 者：Matrix207")
+    call append(line("$"), " * 创建日期：".strftime("%Y年%m月%d日")) 
+    call append(line("$"), " * 描    述：") 
+    call append(line("$"), " *")
+    call append(line("$"), " * 更新日志：") 
+    call append(line("$"), " *") 
+    call append(line("$"), " ================================================================*/") 
+endfunc
+
+func SetTitle()
+    call SetComment()
+    if expand("%:e") == 'hpp' 
+	 call append(line("$"), "#ifndef _".toupper(expand("%:t:r"))."_H_") 
+	 call append(line("$"), "#define _".toupper(expand("%:t:r"))."_H_") 
+	 call append(line("$"), "#ifdef __cplusplus") 
+	 call append(line("$"), "extern \"C\"") 
+	 call append(line("$"), "{") 
+	 call append(line("$"), "#endif") 
+	 call append(line("$"), "") 
+	 call append(line("$"), "#ifdef __cplusplus") 
+	 call append(line("$"), "}") 
+	 call append(line("$"), "#endif") 
+	 call append(line("$"), "#endif /* _".toupper(expand("%:t:r"))."_H_ */")
+    elseif expand("%:e") == 'h' 
+	 "call append(line("$"), "#pragma once") 
+	 call append(line("$"), "#ifndef _".toupper(expand("%:t:r"))."_H_") 
+	 call append(line("$"), "#define _".toupper(expand("%:t:r"))."_H_") 
+	 call append(line("$"), "") 
+	 call append(line("$"), "") 
+	 call append(line("$"), "") 
+	 call append(line("$"), "#endif /* _".toupper(expand("%:t:r"))."_H_ */")
+    elseif &filetype == 'c' 
+	 call append(line("$"), "#include \"".expand("%:t:r").".h\"") 
+    elseif &filetype == 'cpp' 
+	 call append(line("$"), "#include \"".expand("%:t:r").".h\"") 
+    endif
+endfunc
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Auto add file title when create new file
+autocmd BufNewFile Makefile exec ":call InitMakefile()" 
+
+func MakefileComment()
+    call setline(1,"#################################################################") 
+    call append(line("$"), "# Copyright (C) ".strftime("%Y")." All rights reserved.")
+    call append(line("$"), "# ") 
+    call append(line("$"), "# 文件名称：".expand("%:t")) 
+    call append(line("$"), "# 创 建 者：Matrix207")
+    call append(line("$"), "# 创建日期：".strftime("%Y年%m月%d日")) 
+    call append(line("$"), "# 描    述：") 
+    call append(line("$"), "#")
+    call append(line("$"), "# 更新日志：") 
+    call append(line("$"), "#") 
+    call append(line("$"), "##################################################################") 
+
+endfunc
+
+" FIX: Should replace the four space key with TAB key
+func InitMakefile()
+	call MakefileComment()
+	call append(line("$"), "CC     = gcc") 
+	call append(line("$"), "FLAG   = -Wall") 
+	call append(line("$"), "SRC    = ") 
+	call append(line("$"), "OBJ    =$(SRC:.c=.o) ") 
+	call append(line("$"), "LIB    = ") 
+	call append(line("$"), "TARGET = ") 
+	call append(line("$"), "") 
+	call append(line("$"), "all:$(TARGET)") 
+	call append(line("$"), "") 
+	call append(line("$"), "$(TARGET):$(OBJ)") 
+	call append(line("$"), "    $(CC) -o $@ $^ $(LIB)") 
+	call append(line("$"), "")
+	call append(line("$"), ".PHONY:clean")
+	call append(line("$"), "clean:")
+	call append(line("$"), "    rm -f $(OBJ) $(TARGET)")
+endfunc
