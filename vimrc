@@ -1,6 +1,16 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Description: .vimrc
+" Maintainer: 
+"         Dennis
+"         http://matrix207.github.com
+"
+" Version: 
+"         1.8 - 26/09/2015 00:09:00
+"
+" Blogversion: 
+"         https://github.com/matrix207/vimrc
+"
 " History:
+"         2015/09/25 Dennis  Add highlight
 "         2014/07/07 Dennis  Auto add file title when create new file
 "         2014/06/23 Dennis  use clang-complete and change dictionary file
 "         2014/06/19 Dennis  Fix dictionary path error
@@ -69,6 +79,17 @@ source $VIMRUNTIME/menu.vim
 syntax enable
 syntax on
 colorscheme desert
+" :hi List all the current highlight groups
+" :so $VIMRUNTIME/syntax/hitest.vim
+" vim.vim example of the syntax
+hi DTSGroup term=bold cterm=bold,underline ctermfg=Cyan guifg=#80a0ff gui=bold
+hi def link M7Group Todo
+syn match M7Group "FixMe"
+syn match Todo "\<TODO\>"
+syn match DTSGroup "\<DTS\d\{8}\>"
+autocmd FileType c,cpp match Error /\s\+$/ | 2match Error /\t/
+
+set wildignore=*.o,*~,*.pyc
 
 set number
 
@@ -80,6 +101,8 @@ set hlsearch
 
 "set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 set tabstop=4 softtabstop=4 shiftwidth=4
+" using 4 spaces instead of Tab key
+"set et ts=4 sw=4
 
 set nowrap
 set nobackup
@@ -141,6 +164,8 @@ map <leader>p "+gP
 " 刷新文件
 " :e
 
+"设置文件默认语法格式
+au BufferRead,BufferWrite file *.md set filetype=markdown
 
 " 设置代码自动补全快捷键(这些方法在插件中已经实现)
 "设置文件头
@@ -210,7 +235,7 @@ let g:winManagerWindowLayout='FileExplorer|TagList'
 nmap wm :WMToggle<cr>
 "刷新目录信息 :e .
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " cscope
 " yum install cscope
 " cscope -Rb
